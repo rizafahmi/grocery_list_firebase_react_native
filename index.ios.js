@@ -9,6 +9,8 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
+  TextInput,
+  Navigator,
   ListView,
   View
 } from 'react-native';
@@ -35,7 +37,8 @@ export default class crud_rn extends Component {
     this.state = {
       dataSource: new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2
-      })
+      }),
+      text: ""
     }
 
     this.itemsRef = this.getRef().child('items')
@@ -67,13 +70,27 @@ export default class crud_rn extends Component {
     console.log(item)
     return <GroceryItem item={item} />
   }
+  _addItem() {
+    this.itemsRef.push({title: this.state.text})
+    this.setState({
+      title: ""
+    })
+  }
+  textChanged() {
+
+  }
   render() {
     return (
       <View style={styles.container}>
         <Title title="Daftar Belanja" />
         <ListView dataSource={this.state.dataSource}
           renderRow={this._renderItem.bind(this)} />
-        <ActionButton title="Add"/>
+        <TextInput
+        style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+        onChangeText={(text) => this.setState({text})}
+        value={this.state.text}
+      />
+        <ActionButton title="Add" onPress={this._addItem.bind(this)}/>
       </View>
     );
   }

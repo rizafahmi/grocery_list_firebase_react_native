@@ -3,10 +3,20 @@ import {
   TouchableHighlight,
   View,
   Text,
+  TextInput,
   StyleSheet
 } from 'react-native'
 
 export default class ActionButton extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      text: ""
+    }
+  }
+  textChanged() {
+    console.log("Change text")
+  }
   render() {
     const styles = StyleSheet.create({
       action: {
