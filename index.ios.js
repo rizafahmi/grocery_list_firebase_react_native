@@ -82,7 +82,7 @@ export default class crud_rn extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Title title="Daftar Belanja" />
+        <Title title="Chat app" />
         <ListView dataSource={this.state.dataSource}
           renderRow={this._renderItem.bind(this)} />
         <TextInput
