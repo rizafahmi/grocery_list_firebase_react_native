@@ -9,14 +9,15 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
+  ListView,
   View
 } from 'react-native';
 
 import * as firebase from 'firebase'
 
 import ActionButton from './components/ActionButton.js'
-import GroceryList from './components/GroceryList.js'
-// import Title from './components/Title.js'
+import GroceryItem from './components/GroceryItem.js'
+import Title from './components/Title.js'
 
 // Initialize Firebase
 const config = {
@@ -29,10 +30,25 @@ const config = {
 firebase.initializeApp(config)
 
 export default class crud_rn extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      dataSource: new ListView.DataSource({
+        rowHasChanged: (row1, row2) => row1 !== row2
+      })
+    }
+  }
+  _renderItem(item) {
+    return (
+        <GroceryItem item={item} />
+    )
+  }
   render() {
     return (
       <View style={styles.container}>
-        <GroceryList />
+        <Title title="Daftar Belanja" />
+        <ListView datasource={this.state.dataSource}
+          renderrow={this._renderItem.bind(this)} />
         <ActionButton title="Add"/>
       </View>
     );
