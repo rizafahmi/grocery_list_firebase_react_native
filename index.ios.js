@@ -27,7 +27,7 @@ const config = {
   storageBucket: "reactnative-e1ae6.appspot.com",
   messagingSenderId: "318927502684"
 }
-firebase.initializeApp(config)
+const firebaseApp = firebase.initializeApp(config)
 
 export default class crud_rn extends Component {
   constructor(props) {
@@ -37,16 +37,35 @@ export default class crud_rn extends Component {
         rowHasChanged: (row1, row2) => row1 !== row2
       })
     }
+
+    this.itemsRef = this.getRef().child('items')
+
+  }
+  getRef() {
+    return firebaseApp.database().ref()
+  }
+  listenForItems(itemsRef) {
+    itemsRef.on('value', (fbItems) => {
+      let items = []
+      fbItems.forEach((item) => {
+        items.push({
+          title: item.val().title,
+          _key: item.key
+        })
+      })
+
+      this.setState({
+        dataSource: this.state.dataSource.cloneWithRows(items)
+      })
+    })
+
   }
   componentDidMount() {
-    this.setState({
-      dataSource: this.state.dataSource.cloneWithRows([{title: 'Pizza'}, {title: "Burger"}])
-    })
+    this.listenForItems(this.itemsRef)
   }
   _renderItem(item) {
-    return (
-        <GroceryItem item={item} />
-    )
+    console.log(item)
+    return <GroceryItem item={item} />
   }
   render() {
     return (
