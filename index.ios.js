@@ -38,6 +38,11 @@ export default class crud_rn extends Component {
       })
     }
   }
+  componentDidMount() {
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows([{title: 'Pizza'}, {title: "Burger"}])
+    })
+  }
   _renderItem(item) {
     return (
         <GroceryItem item={item} />
@@ -47,8 +52,8 @@ export default class crud_rn extends Component {
     return (
       <View style={styles.container}>
         <Title title="Daftar Belanja" />
-        <ListView datasource={this.state.dataSource}
-          renderrow={this._renderItem.bind(this)} />
+        <ListView dataSource={this.state.dataSource}
+          renderRow={this._renderItem.bind(this)} />
         <ActionButton title="Add"/>
       </View>
     );
@@ -61,6 +66,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
+    paddingTop: 50
   },
   welcome: {
     fontSize: 20,
